@@ -1,0 +1,3 @@
+﻿  ProjekGrafkom.cpp
+d:\document\kuliah\semester 3\grafkom\projekgrafkom\projekgrafkom\projekgrafkom\projekgrafkom.cpp(320): error C2664: 'void tulis2(int,int,char *)': cannot convert argument 3 from 'const char [3]' to 'char *'
+  d:\document\kuliah\semester 3\grafkom\projekgrafkom\projekgrafkom\projekgrafkom\projekgrafkom.cpp(320): note: Conversion from string literal loses const qualifier (see /Zc:strictStrings)
