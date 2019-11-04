@@ -1,0 +1,6 @@
+to do list
+numpad movement system
+awan animation
+more environtment
+toggle on/off numpad or arrow
+add bomb

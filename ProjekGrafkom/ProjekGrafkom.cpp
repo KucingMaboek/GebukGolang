@@ -16,29 +16,405 @@
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
-#include<string>
-#include<sstream>
-#endif
-
+#include <string>
+#include <sstream>
+#include <fstream>
+#include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#endif
+using namespace std;
 
-
-GLfloat angle = 1;
+float angle = 15;
+bool paluGerak = true;
 int refreshmill = 1;
+bool selected = false;
+float paluX = 0;
+float paluY = 0;
+int sleepdelay = 0;
+float rotasi;
+bool muter = true;
+int waktu = 60;
+char cetakwaktu[1000];
+int currentScore = 0;
+char cetakscore[1000];
+//float dataPosX[4] = { 200,19.2,25.8,32.4 };
+//float dataPosY[4] = { 200,4.8,11.4,18 };
+int koordinat;
+int koordinat1;
+float paluPosXY[10][2] = { {200,200}, {34.1,5.5}, {42.1,5.5}, {50,5.5}, {34.1,13.5}, {42.1,13.5}, {50,13.5}, {34.1,21.5}, {42.1,21.5}, {50,21.5} };
+float dataPosXY[10][2] = { {200,200}, {19.2,4.8}, {25.8, 4.8}, { 32.4, 4.8 }, {19.2,11.4}, { 25.8,11.4 }, { 32.4,11.4 },  {19.2,18},  { 25.8,18 },   { 32.4,18 } };
+float PosX = 200;
+float PosY = 200;
+float PosX1 = 200;
+float PosY1 = 200;
+
 void *font = GLUT_BITMAP_HELVETICA_12;
 void *font2 = GLUT_BITMAP_TIMES_ROMAN_24;
+
 void timer(int value) {
 	glutPostRedisplay();
-	glutTimerFunc(refreshmill, timer, 0);
+	glutTimerFunc(1, timer, 0);
 }
-void tulis2(int x, int y, char *string) {
+void score(int value) {
+	if (waktu > 0)
+	{
+		waktu--;
+	}
+	glutPostRedisplay();
+	glutTimerFunc(1000, score, 0);
+}
+void hamaSpawn(int value) {
+	koordinat = rand() % 10;
+	koordinat1 = rand() % 10;
+	if (koordinat == koordinat1)
+	{
+		koordinat1 = 0;
+	}
+	PosX = dataPosXY[koordinat][0];
+	PosY = dataPosXY[koordinat][1];
+	PosX1 = dataPosXY[koordinat1][0];
+	PosY1 = dataPosXY[koordinat1][1];
+
+	glutPostRedisplay();
+	glutTimerFunc(1300, hamaSpawn, 0);
+}
+void tulis2(int x, int y, const char *string) {
 	glRasterPos2f(x, y);
 	int len = (int)strlen(string);
 	for (int i = 0; i < len; i++) {
 		glutBitmapCharacter(font2, string[i]);
 	}
 }
+
+void hamaReset(int koor) {
+	if (koor == 0)
+	{
+		koordinat = 0;
+		PosX = dataPosXY[0][0];
+		PosY = dataPosXY[0][1];
+		currentScore += 20;
+	}
+	if (koor == 1)
+	{
+		koordinat1 = 0;
+		PosX1 = dataPosXY[0][0];
+		PosY1 = dataPosXY[0][1];
+		currentScore += 20;
+	}
+}
+
+void keyboard(unsigned char key, int x, int y)
+{
+	if (key == 32) {
+		angle = 90;
+		paluGerak = false;
+	}
+	if (key == '1') {
+		paluX = paluPosXY[1][0];
+		paluY = paluPosXY[1][1];
+		angle = 90;
+	}
+	if (key == '2') {
+		paluX = paluPosXY[2][0];
+		paluY = paluPosXY[2][1];
+		angle = 90;
+	}
+	if (key == '3') {
+		paluX = paluPosXY[3][0];
+		paluY = paluPosXY[3][1];
+		angle = 90;
+	}
+	if (key == '4') {
+		paluX = paluPosXY[4][0];
+		paluY = paluPosXY[4][1];
+		angle = 90;
+	}
+	if (key == '5') {
+		paluX = paluPosXY[5][0];
+		paluY = paluPosXY[5][1];
+		angle = 90;
+	}
+	if (key == '6') {
+		paluX = paluPosXY[6][0];
+		paluY = paluPosXY[6][1];
+		angle = 90;
+	}
+	if (key == '7') {
+		paluX = paluPosXY[7][0];
+		paluY = paluPosXY[7][1];
+		angle = 90;
+	}
+	if (key == '8') {
+		paluX = paluPosXY[8][0];
+		paluY = paluPosXY[8][1];
+		angle = 90;
+	}
+	if (key == '9') {
+		paluX = paluPosXY[9][0];
+		paluY = paluPosXY[9][1];
+		angle = 90;
+	}
+}
+void keyboardup(unsigned char key, int x, int y)
+{
+	if (key == 32) {
+		angle = 15;
+		paluGerak = true;
+	}
+
+	//numpad
+	if (key == '1') {
+		angle = 15;
+		if (koordinat == 1)
+		{
+			hamaReset(0);
+		}
+		if (koordinat1 == 1)
+		{
+			hamaReset(1);
+		}
+	}
+	if (key == '2') {
+		angle = 15;
+		if (koordinat == 2)
+		{
+			hamaReset(0);
+		}
+		if (koordinat1 == 2)
+		{
+			hamaReset(1);
+		}
+	}
+	if (key == '3') {
+		angle = 15;
+		if (koordinat == 3)
+		{
+			hamaReset(0);
+		}
+		if (koordinat1 == 3)
+		{
+			hamaReset(1);
+		}
+	}
+	if (key == '4') {
+		angle = 15;
+		if (koordinat == 4)
+		{
+			hamaReset(0);
+		}
+		if (koordinat1 == 4)
+		{
+			hamaReset(1);
+		}
+	}
+	if (key == '5') {
+		angle = 15;
+		if (koordinat == 5)
+		{
+			hamaReset(0);
+		}
+		if (koordinat1 == 5)
+		{
+			hamaReset(1);
+		}
+	}
+	if (key == '6') {
+		angle = 15;
+		if (koordinat == 6)
+		{
+			hamaReset(0);
+		}
+		if (koordinat1 == 6)
+		{
+			hamaReset(1);
+		}
+	}
+	if (key == '6') {
+		angle = 15;
+		if (koordinat == 6)
+		{
+			hamaReset(0);
+		}
+		if (koordinat1 == 6)
+		{
+			hamaReset(1);
+		}
+	}
+	if (key == '7') {
+		angle = 15;
+		if (koordinat == 7)
+		{
+			hamaReset(0);
+		}
+		if (koordinat1 == 7)
+		{
+			hamaReset(1);
+		}
+	}
+	if (key == '8') {
+		angle = 15;
+		if (koordinat == 8)
+		{
+			hamaReset(0);
+		}
+		if (koordinat1 == 8)
+		{
+			hamaReset(1);
+		}
+	}
+	if (key == '9') {
+		angle = 15;
+		if (koordinat == 9)
+		{
+			hamaReset(0);
+		}
+		if (koordinat1 == 9)
+		{
+			hamaReset(1);
+		}
+	}
+}
+
+float speedPalu = 1;
+void keyboardfunction() {
+	if (GetAsyncKeyState(VK_UP) && paluGerak == true)
+	{
+		paluY += speedPalu;
+	}
+	if (GetAsyncKeyState(VK_DOWN) && paluGerak == true)
+	{
+		paluY -= speedPalu;
+	}
+	if (GetAsyncKeyState(VK_RIGHT) && paluGerak == true)
+	{
+		paluX += speedPalu;
+	}
+	if (GetAsyncKeyState(VK_LEFT) && paluGerak == true)
+	{
+		paluX -= speedPalu;
+	}
+}
+
+void drawCircle(float r, float g, float b) {
+	glTranslatef(10, 10, 0);
+	glColor3f(r, g, b);
+	//double  PI = 3.141592654;
+	//double angle = 0.0;
+	//int points = 100;
+
+	for (int i = 0; i < 360; i++) {
+		glRotated(1, 0, 0, 1);
+		glBegin(GL_POLYGON);
+		glVertex2f(3.1, 0);
+		glVertex2f(0, 0);
+		glVertex2f(0, 3.1);
+		glVertex2f(3.1, 3.1);
+		glEnd();
+	}
+}
+
+void baling() {
+	glBegin(GL_POLYGON);
+	glColor3ub(248,156,50);
+	glVertex2f(4.54, 4.36);
+	glVertex2f(4.25, 0.85);
+	glColor3ub(153,87,54);
+	glVertex2f(5.67, 0.39);
+	glVertex2f(5.42, 4.4);
+	glEnd();
+}
+void kincirAngin(float kecepatanRotasi) {
+	glPushMatrix();
+	glRotatef(rotasi*kecepatanRotasi, 0, 0, 1);
+	glTranslatef(-5, -5, 0);
+	glColor3f(1, 0, 0);
+	glPushMatrix();
+	baling();
+	glPopMatrix();
+	glPushMatrix();
+	glRotatef(90, 0, 0, 1);
+	glTranslatef(0, -10, 0);
+	baling();
+	glPopMatrix();
+	glPushMatrix();
+	glRotatef(180, 0, 0, 1);
+	glTranslatef(-10, -10, 0);
+	baling();
+	glPopMatrix();
+	glPushMatrix();
+	glRotatef(270, 0, 0, 1);
+	glTranslatef(-10, 0, 0);
+	baling();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(3.4, 3.4, 0);
+	glScalef(0.16, 0.16, 0);
+	drawCircle(0.957, 0.718, 0.325);
+	glPopMatrix();
+
+	glPopMatrix();
+}
+void kincir(float kecepatanRotasi) {
+	glPushMatrix();
+	glTranslatef(-5, -6.3, 0);
+	//bangunan utama
+	glPushMatrix();
+	glColor3f(1, 0, 1);
+	glBegin(GL_POLYGON);
+	glColor3ub(237,50,55);
+	glVertex2f(2, 0);
+	glVertex2f(2.5, 4);
+	glVertex2f(3, 10);
+	glColor3ub(101, 45, 13);
+	glVertex2f(7, 10);
+	glVertex2f(7.5, 4);
+	glVertex2f(8, 0);
+	glEnd();
+	glPopMatrix();
+	//pintu
+	glPushMatrix();
+	glBegin(GL_POLYGON);
+	glColor3ub(66,2,0);
+	glVertex2f(4,0);
+	glVertex2f(6,0);
+	glColor3ub(36, 0,0);
+	glVertex2f(6,3);
+	glVertex2f(4,3);
+	glEnd();
+	glPopMatrix();
+	//gelang
+	glColor3f(0, 0, 0);
+	glPushMatrix();
+	glBegin(GL_POLYGON);
+	glColor3ub(211,203,57);
+	glVertex2f(2.2,3.8);
+	glVertex2f(7.8,3.8);
+	glColor3ub(245,136,52);
+	glVertex2f(7.8,4.2);
+	glVertex2f(2.2,4.2);
+	glEnd();
+	glPopMatrix();
+	//atap
+	glPushMatrix();
+	glBegin(GL_POLYGON);
+	glColor3ub(238,165,52);
+	glVertex2f(1,8);
+	glVertex2f(9,8);
+	glColor3ub(123,81,50);
+	glVertex2f(5,12);
+	glEnd();
+	glPopMatrix();
+	glPopMatrix();
+	//kincir
+	glPushMatrix();
+	kincirAngin(kecepatanRotasi);
+	glPopMatrix();
+}
+
 void palu() {
+	glRotatef(angle, 0, 0, 1);
 	//gagangnya
 	glColor3f(0, 1, 1);
 	glBegin(GL_POLYGON);
@@ -105,23 +481,7 @@ void pager() {
 	glVertex2f(0, 1.5);
 	glEnd();
 }
-void drawCircle(int r, int g, int b) {
-	glTranslatef(10, 10, 0);
-	glColor3f(r, g, b);
-	double  PI = 3.141592654;
-	double angle = 0.0;
-	int points = 100;
 
-	for (int i = 0; i < 360; i++) {
-		glRotated(1, 0, 0, 1);
-		glBegin(GL_POLYGON);
-		glVertex2f(3.1, 0);
-		glVertex2f(0, 0);
-		glVertex2f(0, 3.1);
-		glVertex2f(3.1, 3.1);
-		glEnd();
-	}
-}
 void hama() {
 	glColor3ub(105, 215, 228);
 	glPushMatrix(); //telinga kiri
@@ -301,8 +661,7 @@ void hama() {
 	glPopMatrix();
 
 }
-void petak(int id) {
-
+void petak(char *id) {
 	glColor3ub(121, 60, 47);
 	glBegin(GL_POLYGON);
 	glVertex2f(0, 0);
@@ -317,21 +676,23 @@ void petak(int id) {
 	drawCircle(0, 0, 0);
 	glPopMatrix();
 	glColor3f(1, 1, 1);
-	tulis2(0.5, 1, "id");
+	tulis2(0.5, 1, id);
 }
 void ladang() {
 	int i;
 	int a;
 	int x = 0;
 	int idpetak = 0;
+	char cetak[1000];
 	for (i = 1; i <= 3; i++) { //atas
 		glTranslatef(0, 11, 0);
 		x = 0;
 		for (a = 1; a <= 3; a++) { //samping ke kanan
-			idpetak += 1;
+			idpetak++;
+			sprintf_s(cetak, "%d", idpetak);
 			glPushMatrix();
 			glTranslatef(x, 0, 0);
-			petak(idpetak);
+			petak(cetak);
 			x += 11;
 			glPopMatrix();
 		}
@@ -435,13 +796,14 @@ void bom() {
 	glEnd();
 	glPopMatrix();
 }
-
-bool muter = true;
 void display() {
+
+	keyboardfunction();
 	glClearColor(0, 0.776, 0.929, 1);
 	glClear(GL_COLOR_BUFFER_BIT); //menghapus windows dan memberi warna yang ada di glclearcolor
 	glLoadIdentity();
-
+	sprintf_s(cetakwaktu, "%d", waktu);
+	sprintf_s(cetakscore, "%d", currentScore);
 	//0.0,171,0.0,91
 
 	glBegin(GL_POLYGON); //langit
@@ -454,6 +816,8 @@ void display() {
 	glEnd();
 
 	//awan start
+	glPushMatrix();
+
 	glPushMatrix();
 	glTranslatef(20, 80, 0);
 	glScalef(1, 1, 0);
@@ -473,6 +837,8 @@ void display() {
 	glTranslatef(120, 75, 0);
 	glScalef(1.7, 1, 0);
 	awan();
+	glPopMatrix();
+
 	glPopMatrix();
 	//awan end
 
@@ -503,19 +869,21 @@ void display() {
 	pager();
 	glPopMatrix();
 
+	//hama start
 	glPushMatrix();
 	glScalef(3, 3, 0);
-	glTranslatef(19.2, 18, 0);
+	glTranslatef(PosX, PosY, 0);
 	hama();
 	glPopMatrix();
 
 	glPushMatrix();
-	glScalef(1.7, 1.7, 0);
-	glTranslatef(48, 34, 0);
-	glRotatef(angle, 0, 0, 1);
-	palu();
+	glScalef(3, 3, 0);
+	glTranslatef(PosX1, PosY1, 0);
+	hama();
 	glPopMatrix();
+	//hama end
 
+	//batu start
 	glPushMatrix();
 	glScalef(10, 10, 0);
 	glTranslatef(1, 1, 0);
@@ -535,12 +903,30 @@ void display() {
 	glTranslated(1, 6, 0);
 	batu();
 	glPopMatrix();
-	/*
+	//batu end
+
 	glPushMatrix();
-	bom();
+	glTranslatef(150, 80, 0);
+	glScalef(3, 3, 0);
+	kincir(1);
 	glPopMatrix();
-	*/
-	//UI
+
+	glPushMatrix();
+	glTranslatef(141, 73, 0);
+	glScalef(2, 2, 0);
+	kincir(2);
+	glPopMatrix();
+	rotasi++;
+	//UI start
+
+	//palu start
+	glPushMatrix();
+	glScalef(2.5, 2.5, 0);
+	glTranslatef(paluX, paluY, 0);
+	palu();
+	glPopMatrix();
+	//palu end
+
 	glPushMatrix();
 	glBegin(GL_POLYGON);
 	glColor3f(1, 1, 1);
@@ -560,20 +946,11 @@ void display() {
 	glEnd();
 	glPopMatrix();
 	glColor3f(0, 0, 0);
-	//tulis2(3, 86, "Score :");
-	//tulis2(3, 82, "Sisa Waktu :");
-	if (angle == 45) {
-		muter = false;
-	}
-	if (angle == 0) {
-		muter = true;
-	}
-	if (muter == true) {
-		angle += 1;
-	}
-	if (muter == false) {
-		angle -= 1;
-	}
+	tulis2(3, 86, "Score :");
+	tulis2(25, 86, cetakscore);
+	tulis2(3, 82, "Sisa Waktu :");
+	tulis2(25, 82, cetakwaktu);
+	//UI end
 
 	glutSwapBuffers();
 	glFlush(); //memaksa proses menggambar sampai selesai
@@ -586,14 +963,22 @@ void myinit() {
 	glMatrixMode(GL_MODELVIEW);
 	glClearColor(1.0, 1.0, 1.0, 1.0); //membersihkan windows
 	glColor3f(0.0, 0.0, 0.0); //spesifikasi warna
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA);
+	glEnable(GL_BLEND);
 }
 int main(int argc, char* argv[]) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+
 	glutInitWindowSize(1368, 728);
 	glutInitWindowPosition(0, 0);
-	glutCreateWindow("Project HeheHihi");
+	glutCreateWindow("Project HeheHihi");	
+	glutKeyboardFunc(keyboard);
+	glutKeyboardUpFunc(keyboardup);
 	glutTimerFunc(0, timer, 0);
+	glutTimerFunc(0, score, 0);
+	glutTimerFunc(0, hamaSpawn, 0);
+
 	glutDisplayFunc(display);
 	myinit();
 	glutMainLoop();
