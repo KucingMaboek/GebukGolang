@@ -38,6 +38,8 @@ int waktu = 60;
 float speedPalu = 1;
 char cetakwaktu[1000];
 int currentScore = 0;
+int targetScore = 1500;
+char cetaktarget[1000];
 char cetakscore[1000];
 char numpad[1000] = "On";
 bool numpadtoggle = true;
@@ -50,8 +52,6 @@ float awanEnd4 = 80;
 float awanEnd5 = 110;
 float awanEnd6 = 120;
 int randSpawn;
-//float dataPosX[4] = { 200,19.2,25.8,32.4 };
-//float dataPosY[4] = { 200,4.8,11.4,18 };
 int koordinat;
 int koordinat1;
 int koordinatPalu;
@@ -66,6 +66,8 @@ void *font = GLUT_BITMAP_HELVETICA_12;
 void *font2 = GLUT_BITMAP_TIMES_ROMAN_24;
 
 void timer(int value) {
+	if (waktu > 0)
+	{
 	awanEnd+=0.06;
 	awanEnd1+=0.1;
 	awanEnd2+=0.07;
@@ -76,6 +78,7 @@ void timer(int value) {
 	bimomuter+=2;
 	glutPostRedisplay();
 	glutTimerFunc(1, timer, 0);
+	}
 }
 void score(int value) {
 	if (waktu > 0)
@@ -389,7 +392,10 @@ void baling() {
 }
 void kincirAngin(float kecepatanRotasi) {
 	glPushMatrix();
+	if (waktu > 0)
+	{
 	glRotatef(rotasi*kecepatanRotasi, 0, 0, 1);
+	}
 	glTranslatef(-5, -5, 0);
 	glColor3f(1, 0, 0);
 	glPushMatrix();
@@ -1167,6 +1173,7 @@ void display() {
 	glLoadIdentity();
 	sprintf_s(cetakwaktu, "%d", waktu);
 	sprintf_s(cetakscore, "%d", currentScore);
+	sprintf_s(cetaktarget, "%d", targetScore);
 	//0.0,171,0.0,91
 
 	glBegin(GL_POLYGON); //langit
@@ -1320,19 +1327,42 @@ void display() {
 	glPopMatrix();
 	//palu end
 
-	//gameover
-	//glPushMatrix();
-	//glBegin(GL_POLYGON);
-	//glColor3f(1, 1, 1);
-	//glVertex2f(40, 30);
-	//glVertex2f(137, 30);
-	//glVertex2f(137, 70);
-	//glVertex2f(40, 70);
-	//glEnd();
-	//glColor3f(0, 0, 0);
-	//glScalef(1.5, 1.5, 0);
-	//tulis2(50, 50, "Numpad mode:");
-	//glPopMatrix();
+
+	if (waktu <= 0)
+	{
+		//gameover
+		glPushMatrix();
+		glBegin(GL_POLYGON);
+		glColor3f(0.8, 0.8, 0.8);
+		glVertex2f(40, 30);
+		glVertex2f(137, 30);
+		glColor3f(1, 1, 1);
+		glVertex2f(137, 70);
+		glVertex2f(40, 70);
+		glEnd();
+		glPopMatrix();
+
+		glPushMatrix();
+		glColor3f(0, 0, 0);
+		tulis2(75, 63, "Game Over..");
+		tulis2(75, 55, "Score:");
+		tulis2(120, 55, cetakscore);
+		tulis2(75, 50, "Target score:");
+		tulis2(120, 50, cetaktarget);
+		if (currentScore < targetScore)
+		{
+			tulis2(90, 35, "Kamu kalah");
+		}
+		else
+		{
+			tulis2(90, 35, "Kamu menang");
+		}
+		glTranslatef(60, 50, 0);
+		glScalef(-1.5, 1.5, 0);
+		bimo();
+		glPopMatrix();
+	}
+	
 
 	glPushMatrix();
 	glBegin(GL_POLYGON);
@@ -1372,12 +1402,12 @@ void myinit() {
 	glMatrixMode(GL_MODELVIEW);
 	glClearColor(1.0, 1.0, 1.0, 1.0); //membersihkan windows
 	glColor3f(0.0, 0.0, 0.0); //spesifikasi warna
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA);
-	glEnable(GL_BLEND);
 }
 int main(int argc, char* argv[]) {
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA);
+	glEnable(GL_BLEND);
 
 	glutInitWindowSize(1368, 728);
 	glutInitWindowPosition(0, 0);
