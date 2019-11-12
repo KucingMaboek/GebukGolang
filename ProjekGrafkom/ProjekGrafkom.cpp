@@ -38,7 +38,7 @@ int waktu = 60;
 float speedPalu = 1;
 char cetakwaktu[1000];
 int currentScore = 0;
-int targetScore = 1500;
+int targetScore = 1000;
 char cetaktarget[1000];
 char cetakscore[1000];
 char numpad[1000] = "On";
@@ -55,35 +55,41 @@ int randSpawn;
 int koordinat;
 int koordinat1;
 int koordinatPalu;
+int playbutton[4] = { 75, 40, 100, 50 }; //x1,y1,x2,y2
+float ortho[2] = { 171,91 };
 float paluPosXY[10][2] = { {200,200}, {34.1,5.5}, {42.1,5.5}, {50,5.5}, {34.1,13.5}, {42.1,13.5}, {50,13.5}, {34.1,21.5}, {42.1,21.5}, {50,21.5} };
 float dataPosXY[10][2] = { {200,200}, {19.2,4.8}, {25.8, 4.8}, { 32.4, 4.8 }, {19.2,11.4}, { 25.8,11.4 }, { 32.4,11.4 },  {19.2,18},  { 25.8,18 },   { 32.4,18 } };
 float PosX = 200;
 float PosY = 200;
 float PosX1 = 200;
 float PosY1 = 200;
-
+bool change = false;
+bool hover = false;
 void *font = GLUT_BITMAP_HELVETICA_12;
 void *font2 = GLUT_BITMAP_TIMES_ROMAN_24;
 
 void timer(int value) {
 	if (waktu > 0)
 	{
-	awanEnd+=0.06;
-	awanEnd1+=0.1;
-	awanEnd2+=0.07;
-	awanEnd3+=0.13;
-	awanEnd4 += 0.15;
-	awanEnd5 += 0.05;
-	awanEnd6 += 0.07;
-	bimomuter+=2;
+		awanEnd+=0.06;
+		awanEnd1+=0.1;
+		awanEnd2+=0.07;
+		awanEnd3+=0.13;
+		awanEnd4 += 0.15;
+		awanEnd5 += 0.05;
+		awanEnd6 += 0.07;
+		bimomuter+=2;
+	}
 	glutPostRedisplay();
 	glutTimerFunc(1, timer, 0);
-	}
 }
 void score(int value) {
-	if (waktu > 0)
+	if (change)
 	{
-		waktu--;
+		if (waktu > 0)
+		{
+			waktu--;
+		}
 	}
 	glutPostRedisplay();
 	glutTimerFunc(1000, score, 0);
@@ -106,7 +112,7 @@ void hamaSpawn(int value) {
 		glutTimerFunc(1300, hamaSpawn, 0);
 	}
 }
-void tulis2(int x, int y, const char *string) {
+void print(int x, int y, const char *string) {
 	glRasterPos2f(x, y);
 	int len = (int)strlen(string);
 	for (int i = 0; i < len; i++) {
@@ -123,6 +129,8 @@ void hamaReset(int koor) {
 		if (randSpawn == 0)
 		{
 		currentScore -= 50;
+		ortho[0] = -50;
+		glutPostRedisplay();
 		}
 		else
 		{
@@ -140,6 +148,9 @@ void hamaReset(int koor) {
 
 void keyboard(unsigned char key, int x, int y)
 {
+	if (key == 'c') {
+		change = true;
+	}
 	if (waktu > 0) {
 		if (key == 32) {
 			angle = 90;
@@ -203,6 +214,64 @@ void keyboard(unsigned char key, int x, int y)
 		}
 	}
 }
+
+
+void mousehover(int mousex, int mousey) {
+	int mousexHoverPos = mousex / 8;
+	int mouseyHoverPos = 91-(mousey / 8);
+	printf("%i current mouse x position \n", mousexHoverPos);
+	printf("%i current mouse y position \n", mouseyHoverPos);
+	
+	//deteksi koordinat mouse
+	//glBegin(GL_LINES);
+	//	glVertex2f(mousexHoverPos, 91);
+	//	glVertex2f(mousexHoverPos, 0);
+	//glEnd;
+	//glBegin(GL_LINES);
+	//glVertex2f(0, (mouseyHoverPos));
+	//glVertex2f(171, (9mouseyHoverPos));
+	//glEnd;
+
+	if (mousexHoverPos >= playbutton[0] && mousexHoverPos <= playbutton[2])
+	{
+		if (mouseyHoverPos >= playbutton[1] && mouseyHoverPos <= playbutton[3])
+		{
+			hover = true;
+		}
+		else
+		{
+			hover = false;
+		}
+	}
+	else
+	{
+		hover = false;
+	}
+	glutPostRedisplay();
+}
+
+void mouse(int button, int state, int mousex, int mousey) {
+	//int width, height;
+	//width = glutGet(GLUT_WINDOW_WIDTH)/8;
+	//height = glutGet(GLUT_WINDOW_HEIGHT)/8;
+	int mousexPos = mousex / 8;
+	int mouseyPos = 91-(mousey / 8);
+	//printf("%i width\n", mousex);
+	//printf("%i heoght\n", mousey);
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_ENTERED && mousexPos >= playbutton[0] && mousexPos <= playbutton[2])
+	{
+		printf("%i posisi mouse x\n", mousexPos);
+		printf("%i posisi mouse y\n", mouseyPos);
+		if (mouseyPos >= playbutton[1] && mouseyPos <= playbutton[3])
+		{
+			printf("Hello");
+			//glutDisplayFunc(display);
+			change = true;
+		}
+	}
+	glutPostRedisplay();
+}
+
 void keyboardup(unsigned char key, int x, int y)
 {
 	if (waktu > 0) {
@@ -364,6 +433,7 @@ void keyboardfunction() {
 		}
 	}
 }
+
 
 void drawCircle(float r, float g, float b) {
 	glTranslatef(10, 10, 0);
@@ -785,7 +855,7 @@ void petak(char *id) {
 	drawCircle(0, 0, 0);
 	glPopMatrix();
 	glColor3f(1, 1, 1);
-	tulis2(1, 1, id);
+	print(1, 1, id);
 }
 void ladang() {
 	int i;
@@ -1165,8 +1235,8 @@ void bimo() {
 }
 
 
-void display() {
 
+void display() {
 	keyboardfunction();
 	glClearColor(0, 0.776, 0.929, 1);
 	glClear(GL_COLOR_BUFFER_BIT); //menghapus windows dan memberi warna yang ada di glclearcolor
@@ -1344,18 +1414,18 @@ void display() {
 
 		glPushMatrix();
 		glColor3f(0, 0, 0);
-		tulis2(75, 63, "Game Over..");
-		tulis2(75, 55, "Score:");
-		tulis2(120, 55, cetakscore);
-		tulis2(75, 50, "Target score:");
-		tulis2(120, 50, cetaktarget);
+		print(75, 63, "Game Over..");
+		print(75, 55, "Score:");
+		print(120, 55, cetakscore);
+		print(75, 50, "Target score:");
+		print(120, 50, cetaktarget);
 		if (currentScore < targetScore)
 		{
-			tulis2(90, 35, "Kamu kalah");
+			print(90, 35, "Kamu kalah");
 		}
 		else
 		{
-			tulis2(90, 35, "Kamu menang");
+			print(90, 35, "Kamu menang");
 		}
 		glTranslatef(60, 50, 0);
 		glScalef(-1.5, 1.5, 0);
@@ -1383,13 +1453,192 @@ void display() {
 	glEnd();
 	glPopMatrix();
 	glColor3f(0, 0, 0);
-	tulis2(3, 86, "Score :");
-	tulis2(23, 86, cetakscore);
-	tulis2(3, 82, "Sisa Waktu :");
-	tulis2(23, 82, cetakwaktu);
-	tulis2(3, 78, "Numpad mode:");
-	tulis2(23, 78, numpad);
+	print(3, 86, "Score :");
+	print(23, 86, cetakscore);
+	print(3, 82, "Sisa Waktu :");
+	print(23, 82, cetakwaktu);
+	print(3, 78, "Numpad mode:");
+	print(23, 78, numpad);
 	//UI end
+
+	glutSwapBuffers();
+	glFlush(); //memaksa proses menggambar sampai selesai
+}
+
+
+//page 1
+void mainMenu() {
+	glClearColor(0, 0.776, 0.929, 1);
+	glClear(GL_COLOR_BUFFER_BIT); //menghapus windows dan memberi warna yang ada di glclearcolor
+	glLoadIdentity();
+	sprintf_s(cetaktarget, "%d", targetScore);
+	//0.0,171,0.0,91
+
+	glBegin(GL_POLYGON); //langit
+	glColor3f(0, 0.776, 0.929);
+	glVertex2f(0, 70);
+	glVertex2f(171, 70);
+	glColor3ub(199, 255, 242);
+	glVertex2f(171, 91);
+	glVertex2f(0, 91);
+	glEnd();
+
+	glPushMatrix();
+	glTranslatef(171, 75, 0);
+	glTranslatef(-(bimomuter*0.1), 10, 0);
+	glScalef(0.3, 0.3, 0);
+	glRotatef(bimomuter, 0, 0, 1);
+	bimo();
+	glPopMatrix();
+
+	//awan start
+	glPushMatrix();
+
+	if (awanEnd >= 160) { awanEnd = -30; }
+	if (awanEnd1 >= 160) { awanEnd1 = -30; }
+	if (awanEnd2 >= 160) { awanEnd2 = -30; }
+	if (awanEnd3 >= 160) { awanEnd3 = -30; }
+	if (awanEnd4 >= 160) { awanEnd4 = -30; }
+
+	glPushMatrix();
+	glTranslatef(awanEnd, 80, 0);
+	glScalef(1, 1, 0);
+	awan();
+	glPopMatrix();
+	glPushMatrix();
+	glTranslatef(awanEnd1, 70, 0);
+	glScalef(2, 1, 0);
+	awan();
+	glPopMatrix();
+	glPushMatrix();
+	glTranslatef(awanEnd2, 80, 0);
+	glScalef(2, 1, 0);
+	awan();
+	glPopMatrix();
+	glPushMatrix();
+	glTranslatef(awanEnd3, 75, 0);
+	glScalef(1.7, 1, 0);
+	awan();
+	glPopMatrix();
+	glPushMatrix();
+	glTranslatef(awanEnd4, 73, 0);
+	glScalef(1.2, 1, 0);
+	awan();
+	glPopMatrix();
+	glPushMatrix();
+	glTranslatef(awanEnd5, 77, 0);
+	glScalef(1, 1, 0);
+	awan();
+	glPopMatrix();
+	glPushMatrix();
+	glTranslatef(awanEnd6, 71, 0);
+	glScalef(2, 1, 0);
+	awan();
+	glPopMatrix();
+
+	glPopMatrix();
+	//awan end
+
+	glBegin(GL_POLYGON);
+	glColor3f(0.063, 0.91, 0.176);
+	glVertex2f(0, 0);
+	glVertex2f(171, 0);
+	glColor3ub(125, 191, 0);
+	glVertex2f(171, 75);
+	glVertex2f(0, 75);
+	glEnd();
+
+	//glPushMatrix();
+	//glTranslatef(60, -15, 0);
+	//glScalef(1.8, 1.8, 0);
+	//ladang();
+	//glPopMatrix();
+
+	//glPushMatrix();
+	//glTranslatef(50, 65, 0);
+	//glScalef(3, 3, 0);
+	//pager();
+	//glPopMatrix();
+
+	//glPushMatrix();
+	//glTranslatef(90, 65, 0);
+	//glScalef(3, 3, 0);
+	//pager();
+	//glPopMatrix();
+
+	//batu start
+	glPushMatrix();
+	glScalef(10, 10, 0);
+	glTranslatef(1, 1, 0);
+	batu();
+	glScalef(0.7, 0.7, 0);
+	batu();
+	glPopMatrix();
+
+	glPushMatrix();
+	glScalef(10, 10, 0);
+	glTranslated(13, 2, 0);
+	batu();
+	glPopMatrix();
+
+	glPushMatrix();
+	glScalef(6, 6, 0);
+	glTranslated(1, 6, 0);
+	batu();
+	glPopMatrix();
+	//batu end
+
+	glPushMatrix();
+	glTranslatef(150, 80, 0);
+	glScalef(3, 3, 0);
+	kincir(1);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(141, 73, 0);
+	glScalef(2, 2, 0);
+	kincir(2);
+	glPopMatrix();
+	rotasi++;
+
+	//button ui
+
+	//75, 40, 100, 50
+	glPushMatrix();
+	glBegin(GL_POLYGON);
+	glColor3f(0, 0.776, 0.929);
+	//glColor3f(0.7, 0.7, 0.7);;
+	glVertex2f(70,35);
+	glVertex2f(105,35);
+	glColor3f(1,1,1);;
+	glVertex2f(105,55);
+	glVertex2f(70,55);
+	glEnd();
+	glPopMatrix();
+
+
+	glBegin(GL_POLYGON);
+	if (hover)
+	{
+		glColor3f(0.5, 0.5, 0.5);
+	}
+	else
+	{
+		glColor3f(0.9, 0.9, 0.9);
+	}
+	glVertex2f(playbutton[0], playbutton[1]);
+	glVertex2f(playbutton[2], playbutton[1]);
+	glVertex2f(playbutton[2], playbutton[3]);
+	glVertex2f(playbutton[0], playbutton[3]);
+	glEnd();
+	glColor3f(0, 0, 0);
+	print(78, 44, "Mulai Bermain");
+	glLoadIdentity();
+
+	if (change)
+	{
+		glutDisplayFunc(display);
+	}
 
 	glutSwapBuffers();
 	glFlush(); //memaksa proses menggambar sampai selesai
@@ -1398,7 +1647,7 @@ void display() {
 void myinit() {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0.0, 171, 0.0, 91); //membuat orto
+	gluOrtho2D(0.0, ortho[0], 0.0, ortho[1]); //membuat orto
 	glMatrixMode(GL_MODELVIEW);
 	glClearColor(1.0, 1.0, 1.0, 1.0); //membersihkan windows
 	glColor3f(0.0, 0.0, 0.0); //spesifikasi warna
@@ -1414,11 +1663,14 @@ int main(int argc, char* argv[]) {
 	glutCreateWindow("Project HeheHihi");	
 	glutKeyboardFunc(keyboard);
 	glutKeyboardUpFunc(keyboardup);
+	glutMouseFunc(mouse);
+	//glutMotionFunc(mousehover);
+	glutPassiveMotionFunc(mousehover);
 	glutTimerFunc(0, timer, 0);
 	glutTimerFunc(0, score, 0);
 	glutTimerFunc(0, hamaSpawn, 0);
 
-	glutDisplayFunc(display);
+	glutDisplayFunc(mainMenu);
 	myinit();
 	glutMainLoop();
 	return 0;
