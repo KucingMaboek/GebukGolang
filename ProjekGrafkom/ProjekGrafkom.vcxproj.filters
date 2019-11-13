@@ -18,6 +18,12 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Batu.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -26,7 +32,7 @@
     <ClCompile Include="ProjekGrafkom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets.h">
+    <ClCompile Include="Bimo.h">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

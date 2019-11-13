@@ -22,9 +22,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "Bimo.h"
+#include "Batu.h"
+#include "Pager.h"
 #endif
 using namespace std;
 
+Bimo bimo;
+Batu batu;
+Pager pager;
 float angle = 15;
 bool paluGerak = true;
 int refreshmill = 1;
@@ -129,8 +135,6 @@ void hamaReset(int koor) {
 		if (randSpawn == 0)
 		{
 		currentScore -= 50;
-		ortho[0] = -50;
-		glutPostRedisplay();
 		}
 		else
 		{
@@ -256,16 +260,12 @@ void mouse(int button, int state, int mousex, int mousey) {
 	//height = glutGet(GLUT_WINDOW_HEIGHT)/8;
 	int mousexPos = mousex / 8;
 	int mouseyPos = 91-(mousey / 8);
-	//printf("%i width\n", mousex);
-	//printf("%i heoght\n", mousey);
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_ENTERED && mousexPos >= playbutton[0] && mousexPos <= playbutton[2])
 	{
 		printf("%i posisi mouse x\n", mousexPos);
 		printf("%i posisi mouse y\n", mouseyPos);
 		if (mouseyPos >= playbutton[1] && mouseyPos <= playbutton[3])
 		{
-			printf("Hello");
-			//glutDisplayFunc(display);
 			change = true;
 		}
 	}
@@ -574,52 +574,6 @@ void palu() {
 	glVertex2f(6, 8);
 	glEnd();
 }
-void pager() {
-	//vertical
-	glColor3f(1, 1, 0);
-	glBegin(GL_POLYGON);
-	glColor3ub(224, 138, 53);
-	glVertex2f(1, 6);
-	glVertex2f(1, 0);
-	glColor3ub(121, 60, 47);
-	glVertex2f(2.75, 0);
-	glVertex2f(3, 6);
-	glEnd();
-	glBegin(GL_POLYGON);
-	glColor3ub(224, 138, 53);
-	glVertex2f(4.5, 6);
-	glVertex2f(4.85, 0);
-	glColor3ub(121, 60, 47);
-	glVertex2f(6.5, 0);
-	glVertex2f(6.5, 6);
-	glEnd();
-	glBegin(GL_POLYGON);
-	glColor3ub(224, 138, 53);
-	glVertex2f(8.5, 6);
-	glVertex2f(9, 0);
-	glColor3ub(121, 60, 47);
-	glVertex2f(10.35, 0);
-	glVertex2f(10.5, 6);
-	glEnd();
-	//horizontal
-	glColor3f(1, 0, 1);
-	glBegin(GL_POLYGON);
-	glColor3ub(224, 138, 53);
-	glVertex2f(0, 5.5);
-	glVertex2f(0, 4);
-	glColor3ub(121, 60, 47);
-	glVertex2f(12, 4.3);
-	glVertex2f(12, 5.5);
-	glEnd();
-	glBegin(GL_POLYGON);
-	glColor3ub(224, 138, 53);
-	glVertex2f(0, 2.5);
-	glVertex2f(12, 2.7);
-	glColor3ub(121, 60, 47);
-	glVertex2f(12, 1.5);
-	glVertex2f(0, 1.5);
-	glEnd();
-}
 
 void hama(int spawn) {
 	//hama
@@ -877,24 +831,7 @@ void ladang() {
 		}
 	}
 }
-void batu() {
-	glBegin(GL_POLYGON);
-	glColor3ub(122, 122, 122);
-	glVertex2f(2.19, 0.02);
-	glVertex2f(2.19, 0.27);
-	glColor3ub(74, 74, 74);
-	glVertex2f(2.28, 0.49);
-	glVertex2f(2.54, 0.68);
-	glVertex2f(2.87, 0.7);
 
-	glVertex2f(3.14, 0.59);
-	glColor3f(0, 0, 0);
-	glVertex2f(3.3, 0.4);
-	glVertex2f(3.35, 0.21);
-	glVertex2f(3.35, 0.01);
-	glEnd();
-
-}
 void awan() {
 	glPushMatrix();
 	glScalef(1, 0.5, 0);
@@ -921,319 +858,6 @@ void awan() {
 	drawCircle(1, 1, 1);
 	glPopMatrix();
 }
-void bom() {
-	glPushMatrix();
-	glColor3f(0.2, 0.2, 0.2);
-	glScalef(2, 2, 0);
-	glTranslatef(1.5, 1.5, 0);
-	glBegin(GL_POLYGON);
-	glVertex2f(4.44, 5.5);
-	glVertex2f(4.4, 5.65);
-	glVertex2f(4.38, 5.89);
-	glVertex2f(4.28, 6.01);
-	glVertex2f(4.08, 6.11);
-	glVertex2f(3.68, 6.11);
-	glVertex2f(3.22, 6.07);
-	glVertex2f(2.76, 6);
-	glVertex2f(2.32, 5.86);
-	glVertex2f(1.96, 5.52);
-	glVertex2f(2.04, 5.67);
-	glVertex2f(1.98, 5.33);
-	glVertex2f(2.07, 5.09);
-	glVertex2f(2.67, 4.98);
-	glVertex2f(3.26, 4.91);
-	glVertex2f(4.08, 5.17);
-	glEnd();
-	glPopMatrix();
-	glPushMatrix();
-	drawCircle(0, 0, 0);
-	glPopMatrix();
-	glPushMatrix();
-	glColor4f(0.9, 0.9, 0.9, 0);
-	glScalef(2.5, 2.5, 0);
-	glTranslatef(1, 0.7, 0);
-	glBegin(GL_POLYGON);
-	glVertex2f(2.01, 4.26);
-	glVertex2f(1.74, 3.96);
-	glVertex2f(1.65, 3.65);
-	glVertex2f(1.63, 3.37);
-	glVertex2f(1.66, 3.06);
-	glVertex2f(1.72, 2.82);
-	glVertex2f(1.86, 2.59);
-	glVertex2f(2.04, 2.41);
-	glVertex2f(2.23, 2.42);
-	glVertex2f(2.35, 2.57);
-	glVertex2f(2.2, 2.74);
-	glVertex2f(2.13, 2.88);
-	glVertex2f(2.04, 3.1);
-	glVertex2f(2.02, 3.34);
-	glVertex2f(2.02, 3.59);
-	glVertex2f(2.12, 3.82);
-	glVertex2f(2.34, 4.05);
-	glVertex2f(2.34, 4.24);
-	glVertex2f(2.21, 4.32);
-	glEnd();
-	glPopMatrix();
-}
-
-void bimo() {
-	//BODY
-	glBegin(GL_POLYGON); // BODY 1
-	glColor3f(0.023, 0.482, 0.376);
-	glVertex2d(-5, -5);
-	glVertex2f(-5, 10);
-	glVertex2f(8, 10);
-	glColor3f(0.062, 0.6, 0.482);
-	glVertex2f(8, -5);
-	glEnd();
-	glBegin(GL_POLYGON); //BODY 2
-	glColor3f(0.023, 0.482, 0.376);
-	glVertex2f(-5.5, -4.5);
-	glVertex2f(-5.5, 9.5);
-	glVertex2f(8.5, 9.5);
-	glColor3f(0.062, 0.6, 0.482);
-	glVertex2f(8.5, -4.5);
-	glEnd();
-
-	//FACE
-	glBegin(GL_POLYGON); //muka 1
-	glColor3f(0.4, 0.764, 0.690);
-	glVertex2f(-3.5, 3);
-	glVertex2f(-3.5, 8);
-	glVertex2f(3.5, 8);
-	glVertex2f(3.5, 3);
-	glEnd();
-	glBegin(GL_POLYGON); //muka 2
-	glColor3f(0.4, 0.764, 0.690);
-	glVertex2f(-4, 3.5);
-	glVertex2f(-4, 7.5);
-	glVertex2f(4, 7.5);
-	glVertex2f(4, 3.5);
-	glEnd();
-	glBegin(GL_POLYGON); //mata kiri
-	glColor3f(0.031, 0.462, 0.364);
-	glVertex2f(-2.5, 7);
-	glVertex2f(-2, 7);
-	glVertex2f(-2, 6);
-	glVertex2f(-2.5, 6);
-	glEnd();
-	glBegin(GL_POLYGON); //mata kanan
-	glColor3f(0.031, 0.462, 0.364);
-	glVertex2f(2, 7);
-	glVertex2f(2.5, 7);
-	glVertex2f(2.5, 6);
-	glVertex2f(2, 6);
-	glEnd();
-	glBegin(GL_POLYGON); //mulut
-	glColor3f(0.031, 0.462, 0.364);
-	glVertex2f(-1, 5.5);
-	glVertex2f(1, 5.5);
-	glVertex2f(1, 5);
-	glVertex2f(-1, 5);
-	glEnd();
-	glBegin(GL_POLYGON); //pipi kiri
-	glColor3f(0.517, 0.823, 0.768);
-	glVertex2f(-3.5, 5.5);
-	glVertex2f(-3, 5.5);
-	glVertex2f(-3, 5);
-	glVertex2f(-3.5, 5);
-	glEnd();
-	glBegin(GL_POLYGON); //pipi kanan
-	glColor3f(0.517, 0.823, 0.768);
-	glVertex2f(3, 5.5);
-	glVertex2f(3.5, 5.5);
-	glVertex2f(3.5, 5);
-	glVertex2f(3, 5);
-	glEnd();
-
-	//detail badan
-	glBegin(GL_POLYGON);//detail 1
-	glColor3f(0.145, 0.254, 0.196);
-	glVertex2f(-4, 2);
-	glVertex2f(1, 2);
-	glVertex2f(1, 1.5);
-	glVertex2f(-4, 1.5);
-	glEnd();
-	glBegin(GL_POLYGON);//detail 2
-	glColor3f(0.039, 0.078, 0.450);
-	glVertex2f(3, 2);
-	glVertex2f(3.5, 2);
-	glVertex2f(3.5, 1.5);
-	glVertex2f(3, 1.5);
-	glEnd();
-	glBegin(GL_POLYGON);//detail 3
-	glColor3f(0.686, 0.835, 0.164);
-	glVertex2d(-3, 0.5);
-	glVertex2f(-2.5, 0.5);
-	glVertex2f(-2.5, -1);
-	glVertex2f(-3, -1);
-	glEnd();
-	glBegin(GL_POLYGON);//detail 3.5
-	glColor3f(0.686, 0.835, 0.164);
-	glVertex2f(-3.5, 0);
-	glVertex2f(-2, 0);
-	glVertex2f(-2, -0.5);
-	glVertex2f(-3.5, -0.5);
-	glEnd();
-	glBegin(GL_POLYGON);//detail 4
-	glColor3f(0.254, 0.639, 0.745);
-	glVertex2f(1.5, 0);
-	glVertex2f(2, 0);
-	glVertex2f(2, -0.5);
-	glVertex2f(1.5, -0.5);
-	glEnd();
-	glBegin(GL_POLYGON);//detail 4.5
-	glColor3f(0.254, 0.639, 0.745);
-	glVertex2f(1, -0.5);
-	glVertex2f(2.5, -0.5);
-	glVertex2f(2.5, -1);
-	glVertex2f(1, -1);
-	glEnd();
-	glBegin(GL_POLYGON); //detail 5
-	glColor3f(0.031, 0.533, 0.309);
-	glVertex2f(3, 0);
-	glVertex2f(4, 0);
-	glVertex2f(4, -1);
-	glVertex2f(3, -1);
-	glEnd();
-	glBegin(GL_POLYGON); //detail 6
-	glColor3f(0.039, 0.078, 0.450);
-	glVertex2f(-4, -2.5);
-	glVertex2f(-3, -2.5);
-	glVertex2f(-3, -3);
-	glVertex2f(-4, -3);
-	glEnd();
-	glBegin(GL_POLYGON); //detail 7
-	glColor3f(0.039, 0.078, 0.450);
-	glVertex2f(-2.5, -2.5);
-	glVertex2f(-1.5, -2.5);
-	glVertex2f(-1.5, -3);
-	glVertex2f(-2.5, -3);
-	glEnd();
-	glBegin(GL_POLYGON); //detail 8
-	glColor3f(0.666, 0.113, 0.078);
-	glVertex2f(1.5, -2);
-	glVertex2f(2.5, -2);
-	glVertex2f(2.5, -3);
-	glVertex2f(1.5, -3);
-
-	glEnd();
-
-	//detail body 2
-	glBegin(GL_LINES);
-	glColor3f(0.098, 0.301, 0.254);
-	glVertex2f(5, -5);
-	glVertex2f(5, 10);
-	glEnd();
-	glBegin(GL_POLYGON);//lubang 1
-	glColor3f(0.098, 0.301, 0.254);
-	glVertex2f(6, 9);
-	glVertex2f(6.5, 9);
-	glVertex2f(6.5, 8.5);
-	glVertex2f(6, 8.5);
-	glEnd();
-	glBegin(GL_POLYGON);//lubang 2
-	glColor3f(0.098, 0.301, 0.254);
-	glVertex2f(7, 9);
-	glVertex2f(7.5, 9);
-	glVertex2f(7.5, 8.5);
-	glVertex2f(7, 8.5);
-	glEnd();
-	glBegin(GL_POLYGON);//lubang 3
-	glColor3f(0.098, 0.301, 0.254);
-	glVertex2f(5.5, 8);
-	glVertex2f(6, 8);
-	glVertex2f(6, 7.5);
-	glVertex2f(5.5, 7.5);
-	glEnd();
-	glBegin(GL_POLYGON); //lubang 4
-	glColor3f(0.098, 0.301, 0.254);
-	glVertex2f(6.5, 8);
-	glVertex2f(7, 8);
-	glVertex2f(7, 7.5);
-	glVertex2f(6.5, 7.5);
-	glEnd();
-	glBegin(GL_POLYGON); //lubang 5
-	glColor3f(0.098, 0.301, 0.254);
-	glVertex2f(7.5, 8);
-	glVertex2f(8, 8);
-	glVertex2f(8, 7.5);
-	glVertex2f(7.5, 7.5);
-	glEnd();
-	glBegin(GL_POLYGON); //lubang 6
-	glColor3f(0.098, 0.301, 0.254);
-	glVertex2f(6, 7);
-	glVertex2f(6.5, 7);
-	glVertex2f(6.5, 6.5);
-	glVertex2f(6, 6.5);
-	glEnd();
-	glBegin(GL_POLYGON); //lubang 7
-	glColor3f(0.098, 0.301, 0.254);
-	glVertex2f(7, 7);
-	glVertex2f(7.5, 7);
-	glVertex2f(7.5, 6.5);
-	glVertex2f(7, 6.5);
-	glEnd();
-	glBegin(GL_POLYGON); //bahu 1
-	glColor3f(0.098, 0.301, 0.254);
-	glVertex2f(5.7, 1.7);
-	glVertex2f(7.3, 1.7);
-	glVertex2f(7.3, 1.5);
-	glVertex2f(5.7, 1.5);
-	glEnd();
-	glBegin(GL_POLYGON); //bahu 2
-	glColor3f(0.098, 0.301, 0.254);
-	glVertex2f(5.5, 1.5);
-	glVertex2f(7.5, 1.5);
-	glVertex2f(7.5, 1.3);
-	glVertex2f(5.5, 1.3);
-	glEnd();
-
-	//tangan kaki
-	glBegin(GL_POLYGON); //tangan kanan
-	glColor3f(0.031, 0.462, 0.364);
-	glVertex2f(6, 1.5);
-	glVertex2f(7, 1.5);
-	glVertex2f(7, -7);
-	glVertex2f(6, -7);
-	glEnd();
-	glBegin(GL_POLYGON); //tangan kiri
-	glColor3f(0.098, 0.301, 0.254);
-	glVertex2f(-5, -5);
-	glVertex2f(-4, -5);
-	glVertex2f(-4, -7);
-	glVertex2f(-5, -7);
-	glEnd();
-	glBegin(GL_POLYGON); //kaki kiri 1
-	glColor3f(0.098, 0.301, 0.254);
-	glVertex2f(-3, -5);
-	glVertex2f(-2, -5);
-	glVertex2f(-2, -9);
-	glVertex2f(-3, -9);
-	glEnd();
-	glBegin(GL_POLYGON); //kaki kiri 2
-	glColor3f(0.098, 0.301, 0.254);
-	glVertex2f(-4, -9);
-	glVertex2f(-2, -9);
-	glVertex2f(-2, -10);
-	glVertex2f(-4, -10);
-	glEnd();
-	glBegin(GL_POLYGON); //kaki kanan 1
-	glColor3f(0.031, 0.462, 0.364);
-	glVertex2f(4, -5);
-	glVertex2f(5, -5);
-	glVertex2f(5, -9);
-	glVertex2f(4, -9);
-	glEnd();
-	glBegin(GL_POLYGON); //kaki kanan 2
-	glColor3f(0.031, 0.462, 0.364);
-	glVertex2f(3, -9);
-	glVertex2f(5, -9);
-	glVertex2f(5, -10);
-	glVertex2f(3, -10);
-	glEnd();
-}
-
 
 
 void display() {
@@ -1260,7 +884,7 @@ void display() {
 	glTranslatef(-(bimomuter*0.1), 10, 0);
 	glScalef(0.3, 0.3, 0);
 	glRotatef(bimomuter, 0, 0, 1);
-	bimo();
+	bimo.drawBimo();
 	glPopMatrix();
 
 	//awan start
@@ -1329,13 +953,13 @@ void display() {
 	glPushMatrix();
 	glTranslatef(50, 65, 0);
 	glScalef(3, 3, 0);
-	pager();
+	pager.drawPager();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(90, 65, 0);
 	glScalef(3, 3, 0);
-	pager();
+	pager.drawPager();
 	glPopMatrix();
 
 	//hama start
@@ -1356,21 +980,21 @@ void display() {
 	glPushMatrix();
 	glScalef(10, 10, 0);
 	glTranslatef(1, 1, 0);
-	batu();
+	batu.drawBatu();
 	glScalef(0.7, 0.7, 0);
-	batu();
+	batu.drawBatu();
 	glPopMatrix();
 
 	glPushMatrix();
 	glScalef(10, 10, 0);
 	glTranslated(13, 2, 0);
-	batu();
+	batu.drawBatu();
 	glPopMatrix();
 
 	glPushMatrix();
 	glScalef(6, 6, 0);
 	glTranslated(1, 6, 0);
-	batu();
+	batu.drawBatu();
 	glPopMatrix();
 	//batu end
 
@@ -1429,7 +1053,7 @@ void display() {
 		}
 		glTranslatef(60, 50, 0);
 		glScalef(-1.5, 1.5, 0);
-		bimo();
+		bimo.drawBimo();
 		glPopMatrix();
 	}
 	
@@ -1488,7 +1112,7 @@ void mainMenu() {
 	glTranslatef(-(bimomuter*0.1), 10, 0);
 	glScalef(0.3, 0.3, 0);
 	glRotatef(bimomuter, 0, 0, 1);
-	bimo();
+	bimo.drawBimo();
 	glPopMatrix();
 
 	//awan start
@@ -1557,34 +1181,34 @@ void mainMenu() {
 	//glPushMatrix();
 	//glTranslatef(50, 65, 0);
 	//glScalef(3, 3, 0);
-	//pager();
+	//pager.drawPager();
 	//glPopMatrix();
 
 	//glPushMatrix();
 	//glTranslatef(90, 65, 0);
 	//glScalef(3, 3, 0);
-	//pager();
+	//pager.drawPager();
 	//glPopMatrix();
 
 	//batu start
 	glPushMatrix();
 	glScalef(10, 10, 0);
 	glTranslatef(1, 1, 0);
-	batu();
+	batu.drawBatu();
 	glScalef(0.7, 0.7, 0);
-	batu();
+	batu.drawBatu();
 	glPopMatrix();
 
 	glPushMatrix();
 	glScalef(10, 10, 0);
 	glTranslated(13, 2, 0);
-	batu();
+	batu.drawBatu();
 	glPopMatrix();
 
 	glPushMatrix();
 	glScalef(6, 6, 0);
 	glTranslated(1, 6, 0);
-	batu();
+	batu.drawBatu();
 	glPopMatrix();
 	//batu end
 
@@ -1613,6 +1237,16 @@ void mainMenu() {
 	glColor3f(1,1,1);;
 	glVertex2f(105,55);
 	glVertex2f(70,55);
+	glEnd();
+	glPopMatrix();
+
+	glPushMatrix();
+	glColor4f(1, 1, 0, 0.1);
+	glBegin(GL_POLYGON);
+	glVertex2f(30, 30);
+	glVertex2f(50, 30);
+	glVertex2f(50, 50);
+	glVertex2f(30, 50);
 	glEnd();
 	glPopMatrix();
 
@@ -1651,12 +1285,14 @@ void myinit() {
 	glMatrixMode(GL_MODELVIEW);
 	glClearColor(1.0, 1.0, 1.0, 1.0); //membersihkan windows
 	glColor3f(0.0, 0.0, 0.0); //spesifikasi warna
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 int main(int argc, char* argv[]) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA);
-	glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA);
+	//glEnable(GL_BLEND);
 
 	glutInitWindowSize(1368, 728);
 	glutInitWindowPosition(0, 0);
