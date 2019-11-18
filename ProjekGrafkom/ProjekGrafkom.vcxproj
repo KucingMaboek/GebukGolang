@@ -158,8 +158,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Batu.h" />
+    <ClInclude Include="Circle.h" />
+    <ClInclude Include="Awan.h" />
+    <ClInclude Include="Hama.h" />
+    <ClInclude Include="Scene1.h" />
+    <ClInclude Include="Ladang.h" />
+    <ClInclude Include="Printer.h" />
+    <ClInclude Include="Palu.h" />
+    <ClInclude Include="KincirAngin.h" />
     <ClInclude Include="Pager.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

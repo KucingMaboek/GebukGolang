@@ -24,6 +24,33 @@
     <ClInclude Include="Pager.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Circle.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KincirAngin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Palu.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Awan.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Printer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ladang.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hama.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene1.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

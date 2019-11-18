@@ -1,20 +1,16 @@
+#pragma once
 #include<windows.h>
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
-#include <string>
-#include <sstream>
-#include <fstream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 #endif
 
 class Bimo
 {
 public:
 	int angka = 1;
+	float rotasi;
 	void drawBimo() {
 		//BODY
 		glBegin(GL_POLYGON); // BODY 1
@@ -271,5 +267,9 @@ public:
 		glVertex2f(5, -10);
 		glVertex2f(3, -10);
 		glEnd();
+	}
+
+	void bimoMuter() {
+		rotasi += 2;
 	}
 }; //end of class
