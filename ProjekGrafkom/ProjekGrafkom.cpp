@@ -358,11 +358,19 @@ void keyboardup(unsigned char key, int x, int y)
 			numpadtoggle = !numpadtoggle;
 			if (numpadtoggle == true)
 			{
+				//visual studio user use this
 				sprintf_s(numpad, "On");
+
+				//codeblock user use this
+				//sprintf(numpad, "On");
 			}
 			else
 			{
+				//visual studio user use this
 				sprintf_s(numpad, "Off");
+
+				//codeblock user use this
+				//sprintf(numpad, "Off");
 			}
 		}
 		
@@ -498,9 +506,16 @@ void keyboardfunction() {
 void display() {
 	onLevelSelectUI = false;
 
+	//visual studio user use this 
 	sprintf_s(cetakwaktu, "%d", waktu);
 	sprintf_s(cetakscore, "%d", currentScore);
 	sprintf_s(cetaktarget, "%d", targetScore);
+
+	//codeblock user use this
+	//sprintf(cetakwaktu, "%d", waktu);
+	//sprintf(cetakscore, "%d", currentScore);
+	//sprintf(cetaktarget, "%d", targetScore);
+
 	scene.defaultScene();
 
 	glPushMatrix();
