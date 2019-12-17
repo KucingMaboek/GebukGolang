@@ -1,2 +1,4 @@
 ﻿  ProjekGrafkom.cpp
+d:\document\kuliah\semester 3\grafkom\gebukgolang\projekgrafkom\highscore.h(33): warning C4101: 'status': unreferenced local variable
+d:\document\kuliah\semester 3\grafkom\gebukgolang\projekgrafkom\highscore.h(34): warning C4101: 'fname': unreferenced local variable
   ProjekGrafkom.vcxproj -> D:\Document\KULIAH\SEMESTER 3\GRAFKOM\GebukGolang\Debug\ProjekGrafkom.exe

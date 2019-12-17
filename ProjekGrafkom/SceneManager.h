@@ -98,9 +98,11 @@ public:
 		//glFlush(); //memaksa proses menggambar sampai selesai
 	}
 
-	void levelContainer(int curScore) {
+	void levelContainer(int curScore, int highScore) {
 		char cetakCurScore[1000];
+		char cetakHighScore[1000];
 		sprintf_s(cetakCurScore, "%d", curScore);
+		sprintf_s(cetakHighScore, "%d", highScore);
 		glPushMatrix();
 		glBegin(GL_POLYGON);
 		glColor4f(0.6, 0.6, 0.6, 0.9);
@@ -114,6 +116,8 @@ public:
 		glColor3f(0, 0, 0);
 		print.drawText(95, 64, "Score saat ini:");
 		print.drawText(115, 64, cetakCurScore);
+		//print.drawText(52, 64, "High Score:");
+		//print.drawText(72, 64, cetakHighScore);
 	}
 
 	void levelSelectorUI(int x1, int y1, int x2, int y2, int level, bool hoverSwitch, int CurrentScore) {
@@ -143,27 +147,27 @@ public:
 				print.drawText(x1 + 25, y1 + 2, "500"); //score target
 				print.drawText(x1 + 59, y1 + 6, "60"); //waktu
 				glPushMatrix();
-				if (CurrentScore < 3000) {glColor3f(1, 0, 0);} else{glColor3f(0, 0, 0);}
-				print.drawText(x1 + 25, y1 + 6, "4000"); //score prasyarat
+				if (CurrentScore < 2500) {glColor3f(1, 0, 0);} else{glColor3f(0, 0, 0);}
+				print.drawText(x1 + 25, y1 + 6, "2500"); //score prasyarat
 				print.drawText(x1 + 1, y1 + 6, "Score prasyarat:");
 				glPopMatrix(); 
 				break;
 			case 2:
 				print.drawText(x1 + 59, y1 + 2, "Normal"); //kesulitan
-				print.drawText(x1 + 25, y1 + 2, "2000"); //score target
-				print.drawText(x1 + 59, y1 + 6, "90"); //waktu
+				print.drawText(x1 + 25, y1 + 2, "1400"); //score target
+				print.drawText(x1 + 59, y1 + 6, "60"); //waktu
 				glPushMatrix();
-				if (CurrentScore < 1900) { glColor3f(1, 0, 0); }
+				if (CurrentScore < 900) { glColor3f(1, 0, 0); }
 				else { glColor3f(0, 0, 0); }
-				print.drawText(x1 + 25, y1 + 6, "1900"); //score prasyarat
+				print.drawText(x1 + 25, y1 + 6, "900"); //score prasyarat
 				print.drawText(x1 + 1, y1 + 6, "Score prasyarat:");
 				glPopMatrix();
 				break;
 			case 1:
 				print.drawText(x1 + 59, y1 + 2, "Easy"); //kesulitan
 				print.drawText(x1 + 25, y1 + 6, "0"); //score prasyarat
-				print.drawText(x1 + 25, y1 + 2, "1700"); //score target
-				print.drawText(x1 + 59, y1 + 6, "120"); //waktu
+				print.drawText(x1 + 25, y1 + 2, "900"); //score target
+				print.drawText(x1 + 59, y1 + 6, "60"); //waktu
 				glPushMatrix();
 				print.drawText(x1 + 1, y1 + 6, "Score prasyarat:");
 				break;

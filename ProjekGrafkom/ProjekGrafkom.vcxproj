@@ -161,6 +161,7 @@
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Awan.h" />
     <ClInclude Include="Hama.h" />
+    <ClInclude Include="HighScore.h" />
     <ClInclude Include="Scene1.h" />
     <ClInclude Include="Ladang.h" />
     <ClInclude Include="Printer.h" />

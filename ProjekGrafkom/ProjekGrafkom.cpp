@@ -29,7 +29,7 @@
 #include "Printer.h"
 #include "Ladang.h"
 #include "Hama.h"
-//#include "Scene1.h"
+#include "HighScore.h"
 #include "SceneManager.h"
 using namespace std;
 
@@ -44,11 +44,14 @@ KincirAngin kincirAngin;
 Ladang ladang;
 Hama hama;
 SceneManager scene;
+HighScore highScore;
 //GameObject end
 
+char line[1000];
 int currentScore, targetScore;
 int koordinat, koordinat1, koordinatPalu;
 int totalScore,scoreLevel1,scoreLevel2,scoreLevel3; //score controller
+
 int waktu = 9999, randSpawn, spawnTime;
 int playLevel; //value 1,2,3
 float paluX = 50;
@@ -82,16 +85,18 @@ bool level1Hover,level2Hover,level3Hover;
 
 
 void update(int value) {
+	awan.awanMove();
+	kincirAngin.muter = true;
+	bimo.bimoMuter();
 	//SceneController();
-	if (waktu > 0)
-	{
-		awan.awanMove();
-		bimo.bimoMuter();
-		kincirAngin.muter = true;
-	}
-	else {
-		kincirAngin.muter = false;
-	}
+	//if (waktu > 0)
+	//{
+	//	//awan.awanMove();
+	//	//kincirAngin.muter = true;
+	//}
+	//else {
+	//	kincirAngin.muter = false;
+	//}
 	glutPostRedisplay();
 	glutTimerFunc(1, update, 0);
 }
@@ -270,18 +275,19 @@ void selectedLevel(int level) {
 	switch (level)
 	{
 	case 1:
-		waktu = 120;
+		//waktu = 5;
+		waktu = 60;
 		spawnTime = 1300;
 		currentScore = 0;
 		playLevel = 1;
-		targetScore = 1700;
+		targetScore = 900;
 		break;
 	case 2:
-		waktu = 90;
+		waktu = 60;
 		spawnTime = 1000;
 		currentScore = 0;
 		playLevel = 2;
-		targetScore = 2000;
+		targetScore = 1400;
 		break;
 	case 3:
 		waktu = 60;
@@ -315,7 +321,7 @@ void mouse(int button, int state, int mousex, int mousey) {
 			}
 			if (mouseyPos >= level2[1] && mouseyPos <= level2[3])
 			{
-				if (totalScore >= 1900)
+				if (totalScore >= 900)
 				{
 				selectedLevel(2);
 
@@ -323,7 +329,7 @@ void mouse(int button, int state, int mousex, int mousey) {
 			}
 			if (mouseyPos >= level3[1] && mouseyPos <= level3[3])
 			{
-				if (totalScore >= 4000) {
+				if (totalScore >= 2500) {
 				selectedLevel(3);
 
 				}
@@ -568,11 +574,8 @@ void display() {
 
 	if (waktu < 1)
 	{
+		highScore.write();
 		onGameUI = true;
-		if (onGameUI)
-		{
-
-		}
 		//gameover
 		change1 = false;
 		glPushMatrix();
@@ -632,16 +635,16 @@ void display() {
 	glVertex2f(2, 90);
 	glVertex2f(30, 90);
 	glColor3ub(222, 222, 222);
-	glVertex2f(30, 76);
-	glVertex2f(2, 76);
+	glVertex2f(30, 80);
+	glVertex2f(2, 80);
 	glEnd();
 
 	glBegin(GL_LINES);
 	glColor3f(0, 0, 0);
 	glVertex2f(2, 90);
 	glVertex2f(30, 90);
-	glVertex2f(30, 76);
-	glVertex2f(2, 76);
+	glVertex2f(30, 80);
+	glVertex2f(2, 80);
 	glEnd();
 	glPopMatrix();
 	glColor3f(0, 0, 0);
@@ -649,8 +652,8 @@ void display() {
 	print.drawText(23, 86, cetakscore);
 	print.drawText(3, 82, "Sisa Waktu :");
 	print.drawText(23, 82, cetakwaktu);
-	print.drawText(3, 78, "Numpad mode:");
-	print.drawText(23, 78, numpad);
+	//print.drawText(3, 78, "Numpad mode:");
+	//print.drawText(23, 78, numpad);
 	//UI end
 
 	hama.bombEffect(ortho[0], ortho[1], effectOpacity);
@@ -677,8 +680,13 @@ void levelSelection() {
 	change = false;
 	onLevelSelectUI = true;
 	scene.defaultScene();
+	if (totalScore >= highScore.curHighScore) { 
+		highScore.curHighScore = totalScore;
+		highScore.write();
+	}
 	totalScore = scoreLevel1 + scoreLevel2 + scoreLevel3;
-	scene.levelContainer(totalScore);
+	scene.levelContainer(totalScore,highScore.curHighScore);
+	//scene.levelContainer(totalScore);
 	scene.levelSelectorUI(level1[0], level1[1], level1[2], level1[3], level1[4], level1Hover,totalScore);
 	scene.levelSelectorUI(level2[0], level2[1], level2[2], level2[3], level2[4], level2Hover,totalScore);
 	scene.levelSelectorUI(level3[0], level3[1], level3[2], level3[3], level3[4], level3Hover,totalScore);
@@ -753,7 +761,9 @@ void myinit() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glutFullScreen();
+	highScore.read();
 }
+
 int main(int argc, char* argv[]) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
@@ -772,5 +782,10 @@ int main(int argc, char* argv[]) {
 	glutDisplayFunc(mainMenu);
 	myinit();
 	glutMainLoop();
+
+
+
+	
+
 	return 0;
 }
