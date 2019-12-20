@@ -101,8 +101,15 @@ public:
 	void levelContainer(int curScore, int highScore) {
 		char cetakCurScore[1000];
 		char cetakHighScore[1000];
+
+		//codeblock user
+		//sprintf(cetakCurScore, "%d", curScore);
+		//sprintf(cetakHighScore, "%d", highScore);
+
+		//visual studio user
 		sprintf_s(cetakCurScore, "%d", curScore);
 		sprintf_s(cetakHighScore, "%d", highScore);
+
 		glPushMatrix();
 		glBegin(GL_POLYGON);
 		glColor4f(0.6, 0.6, 0.6, 0.9);
@@ -116,15 +123,20 @@ public:
 		glColor3f(0, 0, 0);
 		print.drawText(95, 64, "Score saat ini:");
 		print.drawText(115, 64, cetakCurScore);
-		//print.drawText(52, 64, "High Score:");
-		//print.drawText(72, 64, cetakHighScore);
+		print.drawText(52, 64, "High Score:");
+		print.drawText(72, 64, cetakHighScore);
 	}
 
 	void levelSelectorUI(int x1, int y1, int x2, int y2, int level, bool hoverSwitch, int CurrentScore) {
 		char cetakLevel[1000];
+
+		//codeblock user
+		//sprintf(cetakLevel, "%d", level);
+
+		//visual studio user
 		sprintf_s(cetakLevel, "%d", level);
+
 		int gameSpeed[3] = { 1300,800,400 };
-		
 		glPushMatrix();
 		glBegin(GL_POLYGON);
 		if (hoverSwitch) { glColor4f(0.7, 0.7, 0.7, 0.9); } else{ glColor4f(1, 1, 1, 0.9); }
